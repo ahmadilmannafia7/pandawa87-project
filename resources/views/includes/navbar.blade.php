@@ -14,7 +14,7 @@
                 <a href="#" class="hover:font-bold transition-all duration-300 ">Armada</a>
             </li>
             <li>
-                <a href="#" class="hover:font-bold transition-all duration-300 ">Testimoni</a>
+                <a href="#" class="hover:font-bold transition-all duration-300 ">review</a>
             </li>
         </ul>
         <div class="flex items-center gap-3">
