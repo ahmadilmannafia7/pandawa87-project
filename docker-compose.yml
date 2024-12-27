@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+    image: pandawa87-project-web-main
+    container_name: pandawa87-project-web-main
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+    working_dir: /var/www/pandawa87-project-web-main
+    volumes:
+      - .:/var/www/pandawa87-project-web-main/
+      - ./storage/php.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - pandawa87-project-web-main
+
+  webserver:
+    image: nginx:alpine
+    container_name: nginxpandawa87-project-web-main
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8082:80"  # Mengganti port webserver dari 2022 ke 8080
+    volumes:
+      - .:/var/www/pandawa87-project-web-main
+      - ./storage/:/etc/nginx/conf.d/
+    networks:
+      - pandawa87-project-web-main
+
+  db:
+    image: mysql:5.7
+    container_name: dbpandawa87-project-web-main
+    restart: always
+    tty: true
+    ports:
+      - "3308:3306"  # Mengganti port database dari 20222 ke 3307
+    volumes:
+      - lbdata:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: audit123
+      MYSQL_DATABASE: project_KomputasiAwan_pandawa87
+    networks:
+      - pandawa87-project-web-main
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pmepandawa87-project-web-main
+    links:
+      - db
+    restart: always
+    ports:
+      - "8081:80"  # Mengganti port phpMyAdmin dari 7000 ke 8081
+    networks:
+      - pandawa87-project-web-main
+
+networks:
+  pandawa87-project-web-main:
+    driver: bridge
+
+volumes:
+  lbdata:
+    driver: local
